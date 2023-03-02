@@ -1,0 +1,106 @@
+﻿<Window x:Class="EFCore_WPF_HomeWork_app.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EFCore_WPF_HomeWork_app"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26*"></RowDefinition>
+            <RowDefinition Height="31"></RowDefinition>
+            <RowDefinition Height="271*"></RowDefinition>
+
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Grid.Column="0">
+            <MenuItem Header="Add Custumer" Click="AddCustumerButton_Click" x:Name="custumerAddMI"></MenuItem>
+        </Menu>
+
+        <Menu Grid.Row="0" Grid.Column="1" >
+            <MenuItem Header="Add Order" Click="orderAddMI_Click" x:Name="orderAddMI"></MenuItem>
+            <MenuItem Header="Settings" Click="menuSettingsClick" />
+        </Menu>
+
+
+
+        <Label Content="CUSTUMERS" Grid.Row="1" Grid.Column="0"
+               HorizontalAlignment="Center" />
+        <Label Content="ORDERS" Grid.Row="1" Grid.Column="1"
+               HorizontalAlignment="Center" />
+        <DataGrid x:Name="CustumersGrid" 
+                  Grid.Column="0" Grid.Row="2" 
+                  ItemsSource="{Binding}" 
+                  IsSynchronizedWithCurrentItem="True" 
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="False"
+                 CurrentCellChanged="CustumersGrid_CurrentCellChanged"
+                  CellEditEnding="CustumersGrid_CellEditEnding">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="id" 
+                                    Binding="{Binding id}" 
+                                    Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="lastName" 
+                                    Binding="{Binding lastName}" 
+                                    Header="Last Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="firstName" 
+                                    Binding="{Binding firstName}" 
+                                    Header="First Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="middleName" 
+                                    Binding="{Binding middleName}"
+                                    Header="Middle Name" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="phone" 
+                                    Binding="{Binding phone}"
+                                    Header="Phone" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="emailc" 
+                                    Binding="{Binding email}"
+                                    Header="Email" IsReadOnly="False"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete record" Click="CustumersDeleteMenu_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <DataGrid x:Name="OrdersGrid"  Grid.Column="1"
+                  Grid.Row="2" ItemsSource="{Binding}"
+                  IsSynchronizedWithCurrentItem="True" 
+                  SelectionMode="Single"
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="False"
+                 CurrentCellChanged="OrdersGrid_CurrentCellChanged"
+                  CellEditEnding="OrdersGrid_CellEditEnding">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="idC" 
+                                    Binding="{Binding id}" 
+                                    Header="ID" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="emailC" 
+                                    Binding="{Binding email}" 
+                                    Header="EMAIL" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productIdC" 
+                                    Binding="{Binding productId}" 
+                                    Header="Product ID" IsReadOnly="False"/>
+                <DataGridTextColumn x:Name="productDescriptionC" 
+                                    Binding="{Binding productDescription}"
+                                    Header="Product Description" IsReadOnly="False"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete record" Click="DeleteMenu_Click"/>
+
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+        </DataGrid>
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+        </StackPanel>
+
+    </Grid>
+
+</Window>

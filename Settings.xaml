@@ -1,0 +1,72 @@
+﻿<Window x:Class="EFCore_WPF_HomeWork_app.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EFCore_WPF_HomeWork_app"
+        mc:Ignorable="d"
+        Title="Settings" Height="380" Width="621">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="107*"/>
+            <RowDefinition Height="14*"/>
+        </Grid.RowDefinitions>
+        <!--#region Authentication-->
+        <StackPanel Grid.ColumnSpan="2" VerticalAlignment="Center" 
+                    HorizontalAlignment="Left" Orientation="Horizontal"
+                    x:Name="AuthenticationPanel" Height="56" Margin="63,0,0,0" Width="506">
+            <TextBlock Text="Autentification" VerticalAlignment="Center" Margin="10 0 30 0"/>
+            <StackPanel Margin="10">
+                <TextBlock Text="Login" Margin="0 0 0 5"/>
+                <TextBlock Text="Password"/>
+            </StackPanel>
+            <StackPanel Margin="10">
+                <TextBox x:Name="loginTxt" Text="" Width="208"/>
+                <TextBox x:Name="passTxt" Text=""/>
+            </StackPanel>
+            <Button x:Name="loginButton" Content="Enter" Width="80" Margin="0 10 10 10" Click="loginButton_Click"/>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region MSSQL-->
+        <StackPanel Grid.Row="1" Grid.Column="0"
+                    x:Name="MSSQLPanel">
+            <TextBlock Text="Enter Data Source"/>
+            <TextBox x:Name="dataSourceTxt" Margin="5"/>
+            <TextBlock Text="Enter Initial Catalog"/>
+            <TextBox x:Name="initialCatTxt" Margin="5"/>
+            <TextBlock Text="----Connection String----" x:Name="mssqlConStr" TextWrapping="Wrap" MaxWidth="150"/>
+            <StackPanel Margin="30 10 0 0"  Orientation="Horizontal">
+                <Button x:Name="msqlConButton" Click="msqlConButton_Click" Content="Try to Connect"  VerticalAlignment="Center" />
+                <Ellipse Width="20" Height="20" Fill="Red" x:Name="MssqlEllipse"
+                         VerticalAlignment="Center" HorizontalAlignment="Right" Margin="40 0 10 0"/>
+                <TextBlock Text="Connection Close" x:Name="MssqlConStateBlock" TextWrapping="Wrap" MaxWidth="90"
+                           FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 10 0"/>
+            </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region OleDBPanel-->
+        <StackPanel x:Name="OleDBPanel" Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Path to Access File"/>
+            <TextBox x:Name="accessPathBox" Margin="5"/>
+            <TextBlock Text="----Connection String----" x:Name="oleDBConStr" TextWrapping="Wrap" MaxWidth="150"/>
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Left" Content="Try To Connect" 
+                    x:Name="oleDBButton" Click="oleDBButton_Click" 
+                    Width="80" Height="20" Margin="10 20 0 0"/>
+                <Ellipse Width="20" Height="20" Fill="Red" x:Name="OleDbEllipse"
+                         VerticalAlignment="Center" HorizontalAlignment="Right" Margin="40 20 10 0"/>
+                <TextBlock Text="Connection Close" FontSize="10" x:Name="OleDBConStateBlock" TextWrapping="Wrap" MaxWidth="90"
+                           VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 20 10 0"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <!--#endregion-->
+        <Button x:Name="SaveSettings" Content="Save Settings" Grid.Row="2" Grid.ColumnSpan="2" Click="SaveSettings_Click"/>
+    </Grid>
+</Window>

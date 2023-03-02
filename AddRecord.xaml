@@ -1,0 +1,53 @@
+﻿<Window x:Class="EFCore_WPF_HomeWork_app.AddRecord"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EFCore_WPF_HomeWork_app"
+        mc:Ignorable="d"
+        Title="AddRecord" Height="340" Width="698" ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="73*"/>
+            <ColumnDefinition Width="327*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="1">
+            <StackPanel VerticalAlignment="Center" x:Name="OrdersPanel">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ID" x:Name="orderId"/>
+                    <TextBlock x:Name="idTxt"/>
+                </StackPanel>
+                <TextBlock Text="EMAIL"/>
+                <TextBox x:Name="emailTxt" />
+                <TextBlock Text="Product ID"  />
+                <TextBox x:Name="productIdTxt" />
+                <TextBlock Text="Product Description"/>
+                <TextBox x:Name="productDescTxt" />
+            </StackPanel>
+            <StackPanel  VerticalAlignment="Center" x:Name="CustumerPanel">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="ID" x:Name="custumerId"/>
+                    <TextBlock x:Name="idTxt2"/>
+                </StackPanel>
+                <TextBlock Text="Last Name"/>
+                <TextBox x:Name="lastNameTxt" />
+                <TextBlock Text="First Name"  />
+                <TextBox x:Name="firstNameTxt" />
+                <TextBlock Text="Middle Name"/>
+                <TextBox x:Name="midleNameTxt" />
+                <TextBlock Text="Phone"/>
+                <TextBox x:Name="phoneTxt" />
+                <TextBlock Text="Email"/>
+                <TextBox x:Name="emailTxt2" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+            <Button x:Name="AddButton" Content="ADD" Click="AddButton_Click"/>
+            <Button x:Name="Exit" Content="Exit" Click="Exit_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
