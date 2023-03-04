@@ -8,5 +8,9 @@ namespace EFCore_WPF_HomeWork_app.Models
 {
     internal class Order
     {
+        public int id { get; set; }
+        public string email { get; set; }
+        public int productId { get; set; }
+        public string productDescription { get; set; }
     }
 }

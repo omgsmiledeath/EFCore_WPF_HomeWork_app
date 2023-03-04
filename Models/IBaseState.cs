@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFCore_WPF_HomeWork_app.ViewModels
+namespace EFCore_WPF_HomeWork_app.Models
 {
-    internal class MainWindowViewModel
+    internal interface IBaseState
     {
-
+        
+        public event Action<string> State;
     }
 }
