@@ -27,7 +27,8 @@ namespace EFCore_WPF_HomeWork_app
     {
         
         SecurityBot sb;
-        SettingsSave connectSettings;
+
+        SettingsSave connectSettings = new SettingsSave(); 
         public Settings()
         {
             InitializeComponent();
@@ -36,11 +37,12 @@ namespace EFCore_WPF_HomeWork_app
             OleDBPanel.Visibility = Visibility.Collapsed;
             SaveSettings.Visibility = Visibility.Collapsed;
         }
-        public Settings(SettingsSave conntectSettings):this()
-        {
-            this.connectSettings = conntectSettings;
-        }
 
+        /// <summary>
+        /// Проверяются входные данные для аутентификации , при наличае файла с настройками выводит последние сохраненные 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(loginTxt.Text) && !string.IsNullOrWhiteSpace(passTxt.Text))
@@ -48,7 +50,6 @@ namespace EFCore_WPF_HomeWork_app
                 if (sb.TryToLogin(loginTxt.Text, passTxt.Text))
                 {
                     MessageBox.Show("Successfully");
-
                     AuthenticationPanel.Visibility = Visibility.Collapsed;
                     MSSQLPanel.Visibility = Visibility.Visible;
                     OleDBPanel.Visibility = Visibility.Visible;
@@ -67,7 +68,11 @@ namespace EFCore_WPF_HomeWork_app
             }
             else MessageBox.Show("Incorrect values in boxes");
         }
-
+        /// <summary>
+        /// Проверка подключения к базе Mssql , если успешно то производится подключение в основном окне
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void msqlConButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(dataSourceTxt.Text) && !string.IsNullOrWhiteSpace(initialCatTxt.Text))
@@ -99,15 +104,12 @@ namespace EFCore_WPF_HomeWork_app
             }
             else MessageBox.Show("Enter Data Source and Initial Catalog");
         }
-        private void setMssqlState(string mess)
-        {
-            MssqlConStateBlock.Text = mess;
-        }
-
-        private void setOleDbState(string mess)
-        {
-            OleDBConStateBlock.Text = mess;
-        }
+        
+        /// <summary>
+        /// Проверка подключения к базе Access , если успешно то производится подключение в основном окне
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void oleDBButton_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(accessPathBox.Text))
@@ -131,7 +133,11 @@ namespace EFCore_WPF_HomeWork_app
 
 
         }
-
+        /// <summary>
+        /// Сохранение данных подключения к базам в экземпляре SettingsSave в файл, сериализованные в JSON 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrEmpty(connectSettings.MssqlDataSource) && !string.IsNullOrEmpty(connectSettings.MssqlInitialCatalog) && !string.IsNullOrEmpty(connectSettings.OledbDataSource))

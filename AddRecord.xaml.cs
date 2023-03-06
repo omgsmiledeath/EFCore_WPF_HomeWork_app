@@ -33,6 +33,7 @@ namespace EFCore_WPF_HomeWork_app
             CustumerPanel.Visibility = Visibility.Collapsed;
             OrdersPanel.Visibility = Visibility.Collapsed;
         }
+        
         public AddRecord(object record, int id) : this()
         {
 
@@ -56,7 +57,11 @@ namespace EFCore_WPF_HomeWork_app
 
 
 
-
+        /// <summary>
+        /// Проверка на введенные значения и ввод данных в экземпляры классов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -85,12 +90,19 @@ namespace EFCore_WPF_HomeWork_app
                 }
         }
         
-
+        /// <summary>
+        /// Закрытие окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
         }
-
+        /// <summary>
+        /// Проверка полей для экземпляра Order
+        /// </summary>
+        /// <returns></returns>
         private bool CheckOleDBboxes()
         {
             if (!isOleDB) return false;
@@ -115,6 +127,10 @@ namespace EFCore_WPF_HomeWork_app
                 return false;
             }
         }
+        /// <summary>
+        /// Проверка полей для экземпляра Custumer
+        /// </summary>
+        /// <returns></returns>
         private bool CheckMSSQLDBboxes()
         {
             if (isOleDB) return false;

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFCore_WPF_HomeWork_app.ViewModels
 {
-    public class OleDbViewModel:IDisposable,IBaseState
+    public class OleDbViewModel:IDisposable
     {
         
         OleDbBase OrdersBase { get; set; }
@@ -37,7 +37,11 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
                 State?.Invoke(ex.Message);
             }
         }
-
+        /// <summary>
+        /// При добавлении в коллекцию Orders , изменяет состояние базы для дальнейшего сохранения элементов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OrdersCollectionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)

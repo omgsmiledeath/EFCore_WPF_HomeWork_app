@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EFCore_WPF_HomeWork_app.ViewModels
 {
-    public class MsSqlViewModel : IDisposable, IBaseState
+    public class MsSqlViewModel : IDisposable
     {
         MsSqlBase CustumerBase { get; set; }
         public ObservableCollection<Custumer> Custumers = new ObservableCollection<Custumer>();
@@ -30,7 +30,7 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
             {
                 CustumerBase = new MsSqlBase(conStr);
                 Custumers = new ObservableCollection<Custumer>(CustumerBase.Custumers);
-                Custumers.CollectionChanged += OrdersCollectionsChanged;
+                Custumers.CollectionChanged += CustumersCollectionsChanged;
                 isConnectedToSql = true;
             }
             catch(Exception ex)
@@ -44,12 +44,16 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
         {
             CustumerBase = new MsSqlBase();
             Custumers = new ObservableCollection<Custumer>();
-            Custumers.CollectionChanged += OrdersCollectionsChanged;
+            Custumers.CollectionChanged += CustumersCollectionsChanged;
 
         }
 
-
-        private void OrdersCollectionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        /// <summary>
+        /// При добавлении в коллекцию Custumers , изменяет состояние базы для дальнейшего сохранения элементов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CustumersCollectionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action) 
             {
@@ -64,6 +68,10 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
                     
             } 
         }
+
+        /// <summary>
+        /// Изменение сообщения о состоянии
+        /// </summary>
         public void CustumerUpdate()
         {
             State?.Invoke("Custumer Updated");
@@ -73,6 +81,10 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
             State?.Invoke("Disposed");
             CustumerBase.Dispose();
         }
+        /// <summary>
+        /// Сохранение изменений в базе
+        /// </summary>
+        /// <returns></returns>
         public async Task SaveChangesAsync()
         {
             State?.Invoke("Change saved");

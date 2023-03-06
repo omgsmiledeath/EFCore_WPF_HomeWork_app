@@ -44,19 +44,29 @@ namespace EFCore_WPF_HomeWork_app
         }
 
         
-
+        /// <summary>
+        /// Для привязки к событию MssqlViewModel, и вывода сообщений состояния базы
+        /// </summary>
+        /// <param name="mess">Сообщение</param>
         private void setMssqlState (string mess)
         {
             mssqlState.Content = mess;
         }
-
+        /// <summary>
+        /// Для привязки к событию OleDBViewModel, и вывода сообщений состояния базы
+        /// </summary>
+        /// <param name="mess">Сообщение</param>
         private void setOleDbState (string mess)
         {
             oledblState.Content = mess;
         }
 
 
-        #region AddCustumer
+        /// <summary>
+        /// Добавление нового Custumer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddCustumerButton_Click(object sender, RoutedEventArgs e)
         {
             Custumer newCustumer = new Custumer();
@@ -70,7 +80,11 @@ namespace EFCore_WPF_HomeWork_app
             }
         }
     
-        #endregion
+        /// <summary>
+        /// Добавление нового Order
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void orderAddMI_Click(object sender, RoutedEventArgs e)
         {
             Order newOrder = new Order();
@@ -83,23 +97,27 @@ namespace EFCore_WPF_HomeWork_app
                 
             }
         }
+        /// <summary>
+        /// Удаление выделенного Order в OrdersGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
             if (OrdersGrid.SelectedItem != null)
             {
                 var order = OrdersGrid.SelectedItem as Order;
                 oleDBVM.Orders.Remove(order);
-                // Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());
             }
             else MessageBox.Show("Select row for delete");
         }
-
-        
-
+        /// <summary>
+        /// Для оповещения об изменении строки с Order в OrdersGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OrdersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-
-
             if (OrdersGrid.SelectedItem != null)
             {
                 
@@ -107,7 +125,11 @@ namespace EFCore_WPF_HomeWork_app
             }
         }
 
-       
+        /// <summary>
+        /// Для оповещения об изменении строки с Custumer в CustumersGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void CustumersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -117,7 +139,11 @@ namespace EFCore_WPF_HomeWork_app
                 
             }
         }
-
+        /// <summary>
+        /// Удаление выделеного Custumer из CustumersGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CustumersDeleteMenu_Click(object sender, RoutedEventArgs e)
         {
             if (CustumersGrid.SelectedItem != null)
@@ -128,26 +154,31 @@ namespace EFCore_WPF_HomeWork_app
             }
             else MessageBox.Show("Select row for delete");
         }
+        /// <summary>
+        /// Создание экземпляра Settings, для ввода строк подключения к базам
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void menuSettingsClick(object sender, RoutedEventArgs e)
         {
-            var connectSettings = new SettingsSave();
-            var settings = new Settings(connectSettings);
+           
+            var settings = new Settings();
             settings.Owner= this;
             settings.ShowDialog();
-            if (!string.IsNullOrEmpty(connectSettings.MssqlDataSource)&&!string.IsNullOrEmpty(connectSettings.MssqlInitialCatalog))
-            {
-                
-            }
+            
         }
-
+        /// <summary>
+        /// Создание экземпляра класса MsSqlViewModel ,для подключения к MSSQL базе
+        /// </summary>
+        /// <param name="datasource"></param>
+        /// <param name="initcatalog"></param>
+        /// <returns></returns>
         public async Task MssqlInit(string datasource,string initcatalog)
         {
             var conStr = new SqlConnectionStringBuilder()
             {
-
                 DataSource = datasource,
                 InitialCatalog = initcatalog,
-
                 IntegratedSecurity = true
             };
             await Task.Run(()=>
@@ -159,14 +190,18 @@ namespace EFCore_WPF_HomeWork_app
             custumerAddMI.IsEnabled = true;
             custumerSaveChanges.IsEnabled = true;
         }
-
+        /// <summary>
+        /// Создание экземпляра класса OleDbInit ,для подключения к Access базе
+        /// </summary>
+        /// <param name="datasource"></param>
+        /// <param name="initcatalog"></param>
+        /// <returns></returns>
         public async Task OleDbInit(string datasource)
         {
             
             await Task.Run(() =>
             oleDBVM = new OleDbViewModel(datasource)
             );
-            
             oleDBVM.State += setOleDbState;
             setOleDbState("Open base");
             OrdersGrid.DataContext = oleDBVM.Orders;
@@ -174,11 +209,20 @@ namespace EFCore_WPF_HomeWork_app
             OrdersSaveChanges.IsEnabled = true;
             
         }
+        /// <summary>
+        /// Сохранение изменений в базе MSSQL
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void custumerSaveChanges_Click(object sender, RoutedEventArgs e)
         {
              Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());
         }
-
+        /// <summary>
+        /// Сохранение измененеий в базе Access
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OrdersSaveChanges_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(() => oleDBVM.SaveChangesAsync());
