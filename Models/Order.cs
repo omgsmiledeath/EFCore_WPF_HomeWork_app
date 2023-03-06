@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EFCore_WPF_HomeWork_app.Models
 {
-    internal class Order
+    public class Order
     {
         public int id { get; set; }
         public string email { get; set; }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFCore_WPF_HomeWork_app.ViewModels
 {
-    internal class OleDbViewModel:IDisposable,IBaseState
+    public class OleDbViewModel:IDisposable,IBaseState
     {
         
         OleDbBase OrdersBase { get; set; }
@@ -19,11 +19,15 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
 
         public event Action<string>? State;
 
+        public OleDbViewModel()
+        {
+            Orders = new ObservableCollection<Order>();
+        }
         public OleDbViewModel(string conStr)
         {
             try
             {
-                OrdersBase = new OleDbBase("");
+                OrdersBase = new OleDbBase(conStr);
                 Orders = new ObservableCollection<Order>(OrdersBase.Orders);
                 Orders.CollectionChanged += OrdersCollectionsChanged;
                 State?.Invoke("Connected");
@@ -46,8 +50,17 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
                     OrdersBase.Orders.RemoveRange(e.OldItems.Cast<Order>().ToArray());
                     State?.Invoke($"Order Deleted");
                     break;
+                case NotifyCollectionChangedAction.Replace:
+                    OrdersBase.Orders.UpdateRange(e.NewItems.Cast<Order>().ToArray());
+                    State?.Invoke("Update Order");
+                    break;
 
             }
+        }
+
+        public void OrderUpdate()
+        {
+            State?.Invoke("Order Updated");
         }
 
         public void Dispose()

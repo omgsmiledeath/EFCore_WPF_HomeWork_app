@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Design;
 namespace EFCore_WPF_HomeWork_app.Models
 {
-    internal class Custumer
+    public class Custumer
     {
         
         public int id { get; set; }

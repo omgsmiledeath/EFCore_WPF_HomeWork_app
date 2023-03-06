@@ -50,7 +50,7 @@
                   SelectionMode="Single"
                   AutoGenerateColumns="False" 
                   IsReadOnly="False"
-                 CurrentCellChanged="CustumersGrid_CurrentCellChanged"
+                 
                   CellEditEnding="CustumersGrid_CellEditEnding">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="id" 
@@ -86,7 +86,7 @@
                   AutoGenerateColumns="False" 
                   IsReadOnly="False"
                   CanUserAddRows="False"
-                 CurrentCellChanged="OrdersGrid_CurrentCellChanged"
+                  
                   CellEditEnding="OrdersGrid_CellEditEnding">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="idC" 

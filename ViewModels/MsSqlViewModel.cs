@@ -1,4 +1,5 @@
 ﻿using EFCore_WPF_HomeWork_app.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,20 +10,44 @@ using System.Threading.Tasks;
 
 namespace EFCore_WPF_HomeWork_app.ViewModels
 {
-    internal class MsSqlViewModel:IDisposable, IBaseState
+    public class MsSqlViewModel : IDisposable, IBaseState
     {
         MsSqlBase CustumerBase { get; set; }
         public ObservableCollection<Custumer> Custumers = new ObservableCollection<Custumer>();
-
+        private bool isConnectedToSql = false;
+        public bool IsConnectedToSql { get 
+            {
+                if(isConnectedToSql) State?.Invoke("Connected"); 
+                else State?.Invoke("Not Connected");
+                return isConnectedToSql;
+            } }
         public event Action<string>? State;
 
+       
         public MsSqlViewModel(string conStr)
         {
-            CustumerBase = new MsSqlBase();
-            Custumers = new ObservableCollection<Custumer>(CustumerBase.Custumers);
-            Custumers.CollectionChanged += OrdersCollectionsChanged;
-            State?.Invoke("Connected");
+            try
+            {
+                CustumerBase = new MsSqlBase(conStr);
+                Custumers = new ObservableCollection<Custumer>(CustumerBase.Custumers);
+                Custumers.CollectionChanged += OrdersCollectionsChanged;
+                isConnectedToSql = true;
+            }
+            catch(Exception ex)
+            {
+                State?.Invoke(ex.Message);
+            }
+            
         }
+
+        public MsSqlViewModel()
+        {
+            CustumerBase = new MsSqlBase();
+            Custumers = new ObservableCollection<Custumer>();
+            Custumers.CollectionChanged += OrdersCollectionsChanged;
+
+        }
+
 
         private void OrdersCollectionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
@@ -39,7 +64,10 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
                     
             } 
         }
-
+        public void CustumerUpdate()
+        {
+            State?.Invoke("Custumer Updated");
+        }
         public void Dispose()
         {
             State?.Invoke("Disposed");

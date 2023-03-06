@@ -18,7 +18,7 @@ namespace EFCore_WPF_HomeWork_app.Models
             _conStr = conStr;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseJetOleDb(@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source = D:\OrdersBase.accdb");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseJetOleDb(@$"Provider=Microsoft.ACE.OLEDB.12.0; Data Source = {_conStr}");
 
 
     }

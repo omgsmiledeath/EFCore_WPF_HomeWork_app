@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace EFCore_WPF_HomeWork_app.Models
 {
-    internal class SettingsSave
+    public class SettingsSave
     {
         [JsonProperty("MssqlDataSource")]
         public string MssqlDataSource { get; set; } = string.Empty;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace EFCore_WPF_HomeWork_app
     public partial class MainWindow : Window
     {
         #region Переменные
-        DataRowView dr;
+        
         OleDbViewModel oleDBVM;
         MsSqlViewModel mssqlDBVM;
         
@@ -34,15 +35,12 @@ namespace EFCore_WPF_HomeWork_app
         public MainWindow()
         {
             InitializeComponent();
-
-            oleDBVM = new OleDbViewModel("");
-            mssqlDBVM = new MsSqlViewModel("");
-            mssqlDBVM.State += setMssqlState;
-            oleDBVM.State += setOleDbState;
-            OrdersGrid.DataContext = oleDBVM.Orders;
-            
-            CustumersGrid.DataContext = mssqlDBVM.Custumers;
-            
+            oleDBVM = new OleDbViewModel();
+            mssqlDBVM = new MsSqlViewModel();
+            custumerAddMI.IsEnabled = false;
+            custumerSaveChanges.IsEnabled = false;
+            orderAddMI.IsEnabled = false;
+            OrdersSaveChanges.IsEnabled=false;
         }
 
         
@@ -96,42 +94,28 @@ namespace EFCore_WPF_HomeWork_app
             else MessageBox.Show("Select row for delete");
         }
 
-        private void OrdersGrid_CurrentCellChanged(object sender, EventArgs e)
-        {
-            //if (dr != null)
-            //{
-            //    dr.EndEdit();
-            //    oleDBVM.Update();
-            //}
-        }
+        
 
         private void OrdersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
 
 
-            //if (OrdersGrid.SelectedItem != null)
-            //{
-            //    dr = (DataRowView)OrdersGrid.SelectedItem;
-            //    dr.BeginEdit();
-            //}
+            if (OrdersGrid.SelectedItem != null)
+            {
+                
+                oleDBVM.OrderUpdate();
+            }
         }
 
-        private void CustumersGrid_CurrentCellChanged(object sender, EventArgs e)
-        {
-            //if (dr != null)
-            //{
-            //    dr.EndEdit();
-            //    mssqlDBVM.Update();
-            //}
-        }
+       
 
         private void CustumersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            //if (CustumersGrid.SelectedItem != null)
-            //{
-            //    dr = (DataRowView)CustumersGrid.SelectedItem;
-            //    dr.BeginEdit();
-            //}
+            if (CustumersGrid.SelectedItem != null)
+            {
+                mssqlDBVM.CustumerUpdate();
+                
+            }
         }
 
         private void CustumersDeleteMenu_Click(object sender, RoutedEventArgs e)
@@ -146,10 +130,50 @@ namespace EFCore_WPF_HomeWork_app
         }
         private void menuSettingsClick(object sender, RoutedEventArgs e)
         {
-            //var settings = new Settings(mssqlDBVM, oleDBVM);
-            //settings.ShowDialog();
+            var connectSettings = new SettingsSave();
+            var settings = new Settings(connectSettings);
+            settings.Owner= this;
+            settings.ShowDialog();
+            if (!string.IsNullOrEmpty(connectSettings.MssqlDataSource)&&!string.IsNullOrEmpty(connectSettings.MssqlInitialCatalog))
+            {
+                
+            }
         }
 
+        public async Task MssqlInit(string datasource,string initcatalog)
+        {
+            var conStr = new SqlConnectionStringBuilder()
+            {
+
+                DataSource = datasource,
+                InitialCatalog = initcatalog,
+
+                IntegratedSecurity = true
+            };
+            await Task.Run(()=>
+            mssqlDBVM = new MsSqlViewModel(conStr.ConnectionString)
+            );
+            mssqlDBVM.State += setMssqlState;
+            setMssqlState("Open base");
+            CustumersGrid.DataContext = mssqlDBVM.Custumers;
+            custumerAddMI.IsEnabled = true;
+            custumerSaveChanges.IsEnabled = true;
+        }
+
+        public async Task OleDbInit(string datasource)
+        {
+            
+            await Task.Run(() =>
+            oleDBVM = new OleDbViewModel(datasource)
+            );
+            
+            oleDBVM.State += setOleDbState;
+            setOleDbState("Open base");
+            OrdersGrid.DataContext = oleDBVM.Orders;
+            orderAddMI.IsEnabled = true;
+            OrdersSaveChanges.IsEnabled = true;
+            
+        }
         private void custumerSaveChanges_Click(object sender, RoutedEventArgs e)
         {
              Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());

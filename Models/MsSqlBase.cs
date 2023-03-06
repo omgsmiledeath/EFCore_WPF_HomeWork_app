@@ -12,12 +12,21 @@ namespace EFCore_WPF_HomeWork_app.Models
     internal class MsSqlBase :DbContext
     {
         public DbSet<Custumer> Custumers { get; set; }
+        private string conStr;
+        public MsSqlBase()
+        {
+
+        }
+        public MsSqlBase(string conStr)
+        {
+            this.conStr = conStr;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var conBuilder = new SqlConnectionStringBuilder { InitialCatalog = "EFCore_HomeWork", DataSource = @"(localdb)\MSSQLLocalDB", IntegratedSecurity = true };
-
-            optionsBuilder.UseSqlServer(conBuilder.ConnectionString);
+            
+            if(!string.IsNullOrEmpty(conStr)) 
+            optionsBuilder.UseSqlServer(conStr);
         }
     }
 }
