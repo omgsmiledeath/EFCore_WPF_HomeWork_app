@@ -146,9 +146,6 @@ namespace EFCore_WPF_HomeWork_app
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            SaveSettings.IsEnabled = false;
-        }
+       
     }
 }

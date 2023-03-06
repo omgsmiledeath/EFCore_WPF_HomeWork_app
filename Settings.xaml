@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EFCore_WPF_HomeWork_app"
         mc:Ignorable="d"
         Title="Settings" Height="380" Width="621"
-        Closing="Window_Closing">
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
