@@ -15,7 +15,7 @@ namespace EFCore_WPF_HomeWork_app.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var conBuilder = new SqlConnectionStringBuilder { InitialCatalog = "ADO_WPF_HomeWork_base", DataSource = @"(localdb)\MSSQLLocalDB", IntegratedSecurity = true };
+            var conBuilder = new SqlConnectionStringBuilder { InitialCatalog = "EFCore_HomeWork", DataSource = @"(localdb)\MSSQLLocalDB", IntegratedSecurity = true };
 
             optionsBuilder.UseSqlServer(conBuilder.ConnectionString);
         }

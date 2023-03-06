@@ -21,22 +21,45 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
 
         public OleDbViewModel(string conStr)
         {
-            OrdersBase = new OleDbBase("");
-            Orders= new ObservableCollection<Order>(OrdersBase.Orders);
-            Orders.CollectionChanged += OrdersCollectionsChanged;
-            State?.Invoke("Connected");
+            try
+            {
+                OrdersBase = new OleDbBase("");
+                Orders = new ObservableCollection<Order>(OrdersBase.Orders);
+                Orders.CollectionChanged += OrdersCollectionsChanged;
+                State?.Invoke("Connected");
+            }
+            catch (Exception ex) 
+            {
+                State?.Invoke(ex.Message);
+            }
         }
 
         private void OrdersCollectionsChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            OrdersBase.Orders.AddRange(e.NewItems.Cast<Order>().ToArray());
-            State?.Invoke("Orders base changed");
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    OrdersBase.Orders.AddRange(e.NewItems.Cast<Order>().ToArray());
+                    State?.Invoke($"Added new order");
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    OrdersBase.Orders.RemoveRange(e.OldItems.Cast<Order>().ToArray());
+                    State?.Invoke($"Order Deleted");
+                    break;
+
+            }
         }
 
         public void Dispose()
         {
             State?.Invoke("Disposed");
             OrdersBase.Dispose();           
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            State?.Invoke("Change saved");
+            await Task.Run(() => OrdersBase.SaveChangesAsync());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EFCore_WPF_HomeWork_app.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -22,8 +23,8 @@ namespace EFCore_WPF_HomeWork_app
     /// </summary>
     public partial class AddRecord : Window
     {
-        DataRow OleDbDR = null;
-        DataRow MSSQLDR = null;
+        Custumer newCustumer = null;
+        Order newOrder = null;
         bool isMSSQL, isOleDB, isComplete = false;
         int id;
         public AddRecord()
@@ -32,52 +33,58 @@ namespace EFCore_WPF_HomeWork_app
             CustumerPanel.Visibility = Visibility.Collapsed;
             OrdersPanel.Visibility = Visibility.Collapsed;
         }
-        public AddRecord(DataRow dr, int id) : this()
+        public AddRecord(object record, int id) : this()
         {
 
-            switch (dr.Table.Columns.Count)
+            if (record is Order)
             {
-                case 4:
-                    this.OleDbDR = dr;
-                    OrdersPanel.Visibility = Visibility.Visible;
-                    this.id = ++id;
-                    orderId.Text = id.ToString();
-                    isOleDB = true;
-                    break;
-                case 6:
-                    this.MSSQLDR = dr;
-                    this.id = ++id;
-                    custumerId.Text = id.ToString();
-                    CustumerPanel.Visibility = Visibility.Visible;
-                    isMSSQL = true;
-                    break;
+                this.newOrder = record as Order;
+                OrdersPanel.Visibility = Visibility.Visible;
+                this.id = id;
+                orderId.Text = id.ToString();
+                isOleDB = true;
+            }
+            if (record is Custumer)
+            {
+                this.newCustumer = record as Custumer;
+                this.id = id;
+                custumerId.Text = id.ToString();
+                CustumerPanel.Visibility = Visibility.Visible;
+                isMSSQL = true;
+            }       
             }
 
 
-        }
+
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
 
             if (CheckOleDBboxes() && isComplete)
             {
-                OleDbDR["id"] = $"{id}";
-                OleDbDR["email"] = emailTxt.Text;
-                OleDbDR["productId"] = productIdTxt.Text;
-                OleDbDR["productDescription"] = productDescTxt.Text;
+                newOrder.id = id;
+                newOrder.email = emailTxt.Text;
+                int productId;
+                if (Int32.TryParse(productIdTxt.Text, out productId))
+                {
+                    newOrder.productId = productId;
+                }
+                else return;
+                newOrder.productDescription = productDescTxt.Text;
                 this.DialogResult = true;
             }
-            if (CheckMSSQLDBboxes() && isComplete)
-            {
-                MSSQLDR["id"] = $"{id}";
-                MSSQLDR["lastName"] = lastNameTxt.Text;
-                MSSQLDR["firstName"] = firstNameTxt.Text;
-                MSSQLDR["middleName"] = midleNameTxt.Text;
-                MSSQLDR["phone"] = phoneTxt.Text;
-                MSSQLDR["email"] = emailTxt2.Text;
-                this.DialogResult = true;
-            }
+                if (CheckMSSQLDBboxes() && isComplete)
+                {
+                    newCustumer.id = id;
+                    newCustumer.lastName = lastNameTxt.Text;
+                    newCustumer.firstName = firstNameTxt.Text;
+                    newCustumer.middleName = midleNameTxt.Text;
+                    newCustumer.phone = phoneTxt.Text;
+                    newCustumer.email = emailTxt2.Text;
+                    this.DialogResult = true;
+                }
         }
+        
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {

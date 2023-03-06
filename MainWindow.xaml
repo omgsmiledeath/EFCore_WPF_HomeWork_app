@@ -16,20 +16,24 @@
             <RowDefinition Height="26*"></RowDefinition>
             <RowDefinition Height="31"></RowDefinition>
             <RowDefinition Height="271*"></RowDefinition>
-
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Grid.Column="0">
             <MenuItem Header="Add Custumer" Click="AddCustumerButton_Click" x:Name="custumerAddMI"></MenuItem>
+            <MenuItem Header="Save Changes" x:Name ="custumerSaveChanges" Click="custumerSaveChanges_Click"/>
             <MenuItem >
-                <MenuItem.Header>
-                    <Label x:Name="mssqlState" Content="Nofing"/>
-                </MenuItem.Header>
+                
             </MenuItem>
         </Menu>
 
         <Menu Grid.Row="0" Grid.Column="1" >
             <MenuItem Header="Add Order" Click="orderAddMI_Click" x:Name="orderAddMI"></MenuItem>
+            <MenuItem Header="Save Changes" x:Name ="OrdersSaveChanges" Click="OrdersSaveChanges_Click"/>
+            <MenuItem >
+                
+            </MenuItem>
             <MenuItem Header="Settings" Click="menuSettingsClick" />
+            
         </Menu>
 
 
@@ -51,7 +55,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="id" 
                                     Binding="{Binding id}" 
-                                    Header="ID" IsReadOnly="True"/>
+                                    Header="ID" IsReadOnly="False"
+                                    />
                 <DataGridTextColumn x:Name="lastName" 
                                     Binding="{Binding lastName}" 
                                     Header="Last Name" IsReadOnly="False"/>
@@ -107,6 +112,11 @@
         </DataGrid>
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" >
         </StackPanel>
+        
+            <Label Grid.Row="4" Grid.Column="0" x:Name="mssqlState" Content="Nofing"/>
+        
+            <Label Grid.Row="4" Grid.Column="1" x:Name="oledblState" Content="Nofing"/>
+        
 
     </Grid>
 

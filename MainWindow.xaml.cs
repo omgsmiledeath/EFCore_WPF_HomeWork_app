@@ -38,62 +38,62 @@ namespace EFCore_WPF_HomeWork_app
             oleDBVM = new OleDbViewModel("");
             mssqlDBVM = new MsSqlViewModel("");
             mssqlDBVM.State += setMssqlState;
+            oleDBVM.State += setOleDbState;
             OrdersGrid.DataContext = oleDBVM.Orders;
             
             CustumersGrid.DataContext = mssqlDBVM.Custumers;
+            
         }
+
+        
 
         private void setMssqlState (string mess)
         {
             mssqlState.Content = mess;
         }
 
+        private void setOleDbState (string mess)
+        {
+            oledblState.Content = mess;
+        }
 
 
         #region AddCustumer
         private void AddCustumerButton_Click(object sender, RoutedEventArgs e)
         {
-            //int id;
-            //DataRow dr;
-            //if (mssqlDBVM.IsConnectedToSql)
-            //{
-            //    dr = mssqlDBVM.CustumersDt.NewRow();
-            //    id = (int)mssqlDBVM.CustumersDt.Rows[mssqlDBVM.CustumersDt.Rows.Count - 1]["id"];
-            //    AddRecord ar = new AddRecord(dr, id);
-            //    ar.ShowDialog();
-            //    if (ar.DialogResult == true)
-            //    {
-            //        mssqlDBVM.CustumersDt.Rows.Add(dr);
-            //        mssqlDBVM.Update();
-            //    }
-            //}
+            Custumer newCustumer = new Custumer();
+            
+            AddRecord ar = new AddRecord(newCustumer, mssqlDBVM.Custumers.Last().id+1);
+            ar.ShowDialog();
+            if (ar.DialogResult == true)
+            {
+                mssqlDBVM.Custumers.Add(newCustumer);
+                
+            }
         }
+    
         #endregion
         private void orderAddMI_Click(object sender, RoutedEventArgs e)
         {
-            //if (oleDBVM.IsConnectedToAccess)
-            //{
-            //    int id;
-            //    DataRow dr;
-            //    dr = oleDBVM.OrdersDt.NewRow();
-            //    id = (int)oleDBVM.OrdersDt.Rows[oleDBVM.OrdersDt.Rows.Count - 1]["id"];
-            //    AddRecord ar = new AddRecord(dr, id);
-            //    ar.ShowDialog();
-            //    if (ar.DialogResult == true)
-            //    {
-            //        oleDBVM.OrdersDt.Rows.Add(dr);
-            //        oleDBVM.Update();
-            //    }
-            //}
+            Order newOrder = new Order();
+
+            AddRecord ar = new AddRecord(newOrder, oleDBVM.Orders.Last().id + 1);
+            ar.ShowDialog();
+            if (ar.DialogResult == true)
+            {
+                oleDBVM.Orders.Add(newOrder);
+                
+            }
         }
         private void DeleteMenu_Click(object sender, RoutedEventArgs e)
         {
-            //if (OrdersGrid.SelectedItem != null)
-            //{
-            //    (OrdersGrid.SelectedItem as DataRowView).Row.Delete();
-            //    oleDBVM.Update();
-            //}
-            //else MessageBox.Show("Select row for delete");
+            if (OrdersGrid.SelectedItem != null)
+            {
+                var order = OrdersGrid.SelectedItem as Order;
+                oleDBVM.Orders.Remove(order);
+                // Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());
+            }
+            else MessageBox.Show("Select row for delete");
         }
 
         private void OrdersGrid_CurrentCellChanged(object sender, EventArgs e)
@@ -140,7 +140,7 @@ namespace EFCore_WPF_HomeWork_app
             {
                 var custumer= CustumersGrid.SelectedItem as Custumer;
                 mssqlDBVM.Custumers.Remove(custumer);
-              // Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());
+              
             }
             else MessageBox.Show("Select row for delete");
         }
@@ -148,6 +148,16 @@ namespace EFCore_WPF_HomeWork_app
         {
             //var settings = new Settings(mssqlDBVM, oleDBVM);
             //settings.ShowDialog();
+        }
+
+        private void custumerSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+             Dispatcher.Invoke(()=>mssqlDBVM.SaveChangesAsync());
+        }
+
+        private void OrdersSaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(() => oleDBVM.SaveChangesAsync());
         }
     }
 }

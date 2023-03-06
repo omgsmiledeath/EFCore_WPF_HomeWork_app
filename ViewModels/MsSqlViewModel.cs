@@ -48,12 +48,8 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
         public async Task SaveChangesAsync()
         {
             State?.Invoke("Change saved");
-            await CustumerBase.SaveChangesAsync();
+            await Task.Run (()=>CustumerBase.SaveChangesAsync());
         }
-        public void DeleteCustumer (Custumer custumer)
-        {
-           // CustumerBase.Remove(custumer);
-            
-        }
+
     }
 }
