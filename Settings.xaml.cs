@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,7 +92,15 @@ namespace EFCore_WPF_HomeWork_app
 
                 bool canSqlConnect = await Dispatcher.Invoke(async Task<bool> () =>
                 {
-                    return await sqlbase.Database.CanConnectAsync(); 
+                    try
+                    {
+                        return await sqlbase.Database.CanConnectAsync();
+                    }
+                    catch(Exception ex)
+                    {
+                        MssqlConStateBlock.Text = ex.Message;
+                        return false;
+                    }
                 });
                 if (canSqlConnect)
                 {
@@ -118,7 +127,16 @@ namespace EFCore_WPF_HomeWork_app
                 var oledbbase = new OleDbBase(conStr);
                 bool canOledbConnect = await Dispatcher.Invoke(async Task<bool> () =>
                 {
-                    return await oledbbase.Database.CanConnectAsync();
+                    
+                    try
+                    {
+                        return await oledbbase.Database.CanConnectAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        OleDBConStateBlock.Text = ex.Message;
+                        return false;
+                    }
                 });
 
                 if(canOledbConnect) 

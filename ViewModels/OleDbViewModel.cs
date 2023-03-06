@@ -54,14 +54,11 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
                     OrdersBase.Orders.RemoveRange(e.OldItems.Cast<Order>().ToArray());
                     State?.Invoke($"Order Deleted");
                     break;
-                case NotifyCollectionChangedAction.Replace:
-                    OrdersBase.Orders.UpdateRange(e.NewItems.Cast<Order>().ToArray());
-                    State?.Invoke("Update Order");
-                    break;
-
             }
         }
-
+        /// <summary>
+        /// Изменение сообщения о состоянии
+        /// </summary>
         public void OrderUpdate()
         {
             State?.Invoke("Order Updated");
@@ -73,6 +70,10 @@ namespace EFCore_WPF_HomeWork_app.ViewModels
             OrdersBase.Dispose();           
         }
 
+        /// <summary>
+        /// Сохранение изменений в базе
+        /// </summary>
+        /// <returns></returns>
         public async Task SaveChangesAsync()
         {
             State?.Invoke("Change saved");
